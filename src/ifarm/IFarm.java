@@ -1,8 +1,10 @@
 package ifarm;
 
+import ifarm.controller.FarmerSeq;
 import ifarm.controller.FarmerSimulator;
 import ifarm.data.Farmers;
 import java.sql.SQLException;
+import java.util.Random;
 import org.json.JSONException;
 
 public class IFarm {
@@ -18,13 +20,22 @@ public class IFarm {
         int plantStatus = 0;
 
         try {
+            
+            // load data from database to txt file
             farmer = farmerSimulator.generateFarmers(1);
             user = farmerSimulator.generateFarmerFile();
             status = farmerSimulator.generateFarmFile();
             pestStatus = farmerSimulator.generatePesticidesFile();
             fertStatus = farmerSimulator.generateFertilizersFile();
             plantStatus = farmerSimulator.generatePlantFile();
-        } catch (SQLException e) {
+
+        // generate farmers and activities sequentially
+        Random rand = new Random();
+        FarmerSeq fs = new FarmerSeq();
+        fs.generateFarmersActivitiesSeq(10);
+        
+            
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
