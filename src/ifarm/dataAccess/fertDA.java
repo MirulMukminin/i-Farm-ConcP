@@ -28,7 +28,7 @@ public class fertDA implements fertDAInt{
         try {
             conn = dbConnection.createCon();
             stmt = conn.prepareStatement("SELECT * FROM fertilizers");
-            rst = stmt.executeQuery();;
+            rst = stmt.executeQuery();
             int count = 0;
 
             while (rst.next()) {

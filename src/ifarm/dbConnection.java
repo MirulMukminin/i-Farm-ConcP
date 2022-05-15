@@ -1,6 +1,7 @@
 
 package ifarm;
 
+import ifarm.dataAccess.activityDA;
 import ifarm.dataAccess.farmDA;
 import ifarm.dataAccess.fertDA;
 import ifarm.dataAccess.pestDA;
@@ -50,4 +51,10 @@ public class dbConnection {
     public pestDA getPesticidesDA() {
         return new pestDA();
     }
+    
+    public activityDA getActivityDA() {
+        return new activityDA();
+    }
+    
+    
 }
