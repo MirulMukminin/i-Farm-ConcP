@@ -3,6 +3,8 @@ package ifarm;
 import ifarm.controller.FarmerSeq;
 import ifarm.controller.FarmerSimulator;
 import ifarm.data.Farmers;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Random;
 import org.json.JSONException;
@@ -10,6 +12,8 @@ import org.json.JSONException;
 public class IFarm {
 
     public static void main(String[] args) throws SQLException, JSONException {
+        
+        
         
         FarmerSimulator farmerSimulator = new FarmerSimulator();
         Farmers[] farmer = null;
@@ -20,7 +24,9 @@ public class IFarm {
         int plantStatus = 0;
 
         try {
-            
+        Connection conn = dbConnection.createCon();
+        PreparedStatement stmt = conn.prepareStatement("TRUNCATE activities");
+        stmt.execute();
             // load data from database to txt file
             farmer = farmerSimulator.generateFarmers(1);
             user = farmerSimulator.generateFarmerFile();

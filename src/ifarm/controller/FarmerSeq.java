@@ -28,20 +28,21 @@ public class FarmerSeq {
         try {
             Random rand = new Random();
             Utility util = new Utility();
-            String users = util.readFile("farmers.txt");
+            String users = util.readFile("farmer.txt");
             JSONArray userArr = new JSONArray(users);
             JSONObject userObj = null;
             String userID = "";
 
-            if (userArr != null) {
-                userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
-                userID = userObj.getString("id");
-            }
+            
 
             // generate farmers
             int indexDb = 1;
             for (int i = 0; i < numOfFarmers; i++) {
                 // generate random number to access any random content from the array
+                if (userArr != null) {
+                userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
+                userID = userObj.getString("id");
+            }
                 int numOfActivities = rand.nextInt(10) + 1000;
                 indexDb = generateActivitiesSeq(userID, indexDb, numOfActivities);
                 indexDb++;
@@ -69,7 +70,7 @@ public class FarmerSeq {
             JSONArray plantArr = new JSONArray(plants);
             JSONArray fertArr = new JSONArray(fertilizer);
             JSONArray pestArr = new JSONArray(pesticide);
-
+            
             // generate activities
             for (int i = 0; i < numOfActivities; i++) {
 
@@ -89,9 +90,9 @@ public class FarmerSeq {
                 String[] actions = {"sowing", "harvest", "pesticide", "fertilizer", "sales"};
                 action = actions[rand.nextInt(actions.length)];
 
-                quantity = String.valueOf(rand.nextInt(11));
-                field = String.valueOf(rand.nextInt(10));
-                row = String.valueOf(rand.nextInt(10));
+                quantity = String.valueOf(rand.nextInt(10)+1);
+                field = String.valueOf(rand.nextInt(10))+1;
+                row = String.valueOf(rand.nextInt(10))+1;
 
                 if (farmArr != null) {
                     farmObj = farmArr.getJSONObject(rand.nextInt(farmArr.length()));
@@ -124,6 +125,7 @@ public class FarmerSeq {
                 actDA.addActivities(act);
 
                 util.writeLog("Success: " + date + " " + action + " " + type + " successfully inserted");
+                System.out.println("User ID " + userID);
                 System.out.println(index + " - " + date + " " + action + " " + type + " " + unit + " " + quantity + " " + field + " " + row + " " + farmID + " " + userID);
 
                 // increment indexDb
