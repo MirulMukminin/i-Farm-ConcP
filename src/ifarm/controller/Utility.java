@@ -17,7 +17,7 @@ import java.util.Random;
 public class Utility {
     
         public String readFile(String filename) throws JSONException, FileNotFoundException {
-        String rootPath = "C:/Users/user/OneDrive - 365.um.edu.my/Degree Life/SEM 6/Concurrent Programming (WIF3003)/Assignment/iFarm v1/";
+        String rootPath = "";
         String data = "";
 
         try {
