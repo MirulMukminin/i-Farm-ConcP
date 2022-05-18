@@ -33,15 +33,16 @@ public class FarmerSeq {
             JSONObject userObj = null;
             String userID = "";
 
-            if (userArr != null) {
-                userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
-                userID = userObj.getString("id");
-            }
+            
 
             // generate farmers
             int indexDb = 1;
             for (int i = 0; i < numOfFarmers; i++) {
                 // generate random number to access any random content from the array
+                if (userArr != null) {
+                userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
+                userID = userObj.getString("id");
+            }
                 int numOfActivities = rand.nextInt(10) + 1000;
                 indexDb = generateActivitiesSeq(userID, indexDb, numOfActivities);
                 indexDb++;
@@ -68,12 +69,58 @@ public class FarmerSeq {
                 String row = randAct.getRow();
                 String farmID = randAct.getFarmID();
 
+                String date = util.getRandomDate();
+                String action = "";
+                String type = "";
+                String quantity = "";
+                String unit = "";
+                String field = "";
+                String row = "";
+                String farmID = "";
+                JSONObject farmObj = null;
+                JSONObject plantObj = null;
+                JSONObject fertObj = null;
+                JSONObject pestObj = null;
+
+                String[] actions = {"sowing", "harvest", "pesticide", "fertilizer", "sales"};
+                action = actions[rand.nextInt(actions.length)];
+
+                quantity = String.valueOf(rand.nextInt(10)+1);
+                field = String.valueOf(rand.nextInt(10))+1;
+                row = String.valueOf(rand.nextInt(10))+1;
+
+                if (farmArr != null) {
+                    farmObj = farmArr.getJSONObject(rand.nextInt(farmArr.length()));
+                    farmID = farmObj.getString("id");
+                }
+
+                if (action.equalsIgnoreCase("sowing") || action.equalsIgnoreCase("harvest") || action.equalsIgnoreCase("sales")) {
+                    if (plantArr != null) {
+                        plantObj = plantArr.getJSONObject(rand.nextInt(plantArr.length()));
+                        type = plantObj.getString("name");
+                        unit = plantObj.getString("unitType");
+                    }
+                } else if (action.equalsIgnoreCase("pesticide")) {
+                    if (pestArr != null) {
+                        pestObj = fertArr.getJSONObject(rand.nextInt(pestArr.length()));
+                        type = pestObj.getString("name");
+                        unit = pestObj.getString("unitType");
+                    }
+                } else if (action.equalsIgnoreCase("fertilizer")) {
+
+                    if (fertArr != null) {
+                        fertObj = fertArr.getJSONObject(rand.nextInt(fertArr.length()));
+                        type = fertObj.getString("name");
+                        unit = fertObj.getString("unitType");
+                    }
+                }
 
                 Activity act = new Activity(String.valueOf(index), date, action, type, unit, quantity, field, row, farmID, userID);
                 activityDA actDA = new dbConnection().getActivityDA();
                 actDA.addActivities(act);
 
                 util.writeLog("Success: " + date + " " + action + " " + type + " successfully inserted");
+                System.out.println("User ID " + userID);
                 System.out.println(index + " - " + date + " " + action + " " + type + " " + unit + " " + quantity + " " + field + " " + row + " " + farmID + " " + userID);
 
                 // increment indexDb

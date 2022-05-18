@@ -20,6 +20,7 @@ public class Activity {
     private String row;
     private String farmId;
     private String userId;
+    private Double total;
 
     public Activity() {
     }
@@ -39,6 +40,14 @@ public class Activity {
 
     public String getId() {
         return id;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 
     public void setId(String id) {
