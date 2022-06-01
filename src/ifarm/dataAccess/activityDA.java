@@ -41,5 +41,15 @@ public class activityDA {
             conn.close();
         }
     }
+        
+    public String truncateActivities() throws SQLException {
+        Connection conn = dbConnection.createCon();
+        PreparedStatement stmt = conn.prepareStatement("TRUNCATE activities");
+        String message = "";
+        if (stmt.execute()) {
+            message = "Activities Table is Truncated";
+        }
+        return message;
+    }
     
 }

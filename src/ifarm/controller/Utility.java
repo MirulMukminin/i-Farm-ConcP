@@ -9,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import org.json.JSONException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 /**
  *
@@ -93,5 +96,12 @@ public class Utility {
 
         return sb.toString();
     }    
+    
+    public ArrayList<String> stringToArray(String data) {
+        String array[] = data.replace("[","").replace("]","").replace("\"","").replace(" ","").replace("\\", "").split(",");
+        ArrayList<String> list = new ArrayList<String>();
+        Collections.addAll(list, array);
+        return list;
+    }
     
 }

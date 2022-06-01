@@ -14,6 +14,8 @@ import ifarm.dataAccess.activityDA;
 import ifarm.dbConnection;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +25,7 @@ import java.util.Scanner;
 
 public class FarmerSeq {
     
-        public void generateFarmersActivitiesSeq(int numOfFarmers) {
+        public void generateFarmersActivitiesSeq(int numOfFarmers, int[] numOfActivities) {
 
         try {
             Random rand = new Random();
@@ -32,33 +34,39 @@ public class FarmerSeq {
             JSONArray userArr = new JSONArray(users);
             JSONObject userObj = null;
             String userID = "";
-
-            if (userArr != null) {
-                userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
-                userID = userObj.getString("id");
-            }
-
+            List<String> userFarm = new ArrayList<>();
+            List<String> userList = new ArrayList<>();
+            
             // generate farmers
             int indexDb = 1;
             for (int i = 0; i < numOfFarmers; i++) {
-                // generate random number to access any random content from the array
-                int numOfActivities = rand.nextInt(10) + 1000;
-                indexDb = generateActivitiesSeq(userID, indexDb, numOfActivities);
+                System.out.println(userArr.length());
+                if (userArr.length() != 0) {
+                    // choose random farmer
+                    userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
+                    // get farmer id
+                    userID = userObj.getString("id");
+                    // get farmer details
+                    //userFarm = util.stringToArray(userObj.getString("farms"));
+                    userFarm = util.stringToArray(userObj.getString("farms"));
+                }
+
+                // generate activities random number to access any random content from the array
+                indexDb = generateActivitiesSeq(userID, userFarm, indexDb, numOfActivities[i]);
                 indexDb++;
             }
 
         } catch (FileNotFoundException | JSONException e) {
-            e.printStackTrace();
         }
 
     }
     
-    public int generateActivitiesSeq(String userID, int index, int numOfActivities) throws FileNotFoundException {
+    public int generateActivitiesSeq(String userID, List<String> userFarm, int index, int numOfActivities) throws FileNotFoundException {
         Utility util = new Utility();
         try {
             // generate activities
             for (int i = 0; i < numOfActivities; i++) {
-                GenerateActivity randAct = new GenerateActivity();
+                GenerateActivity randAct = new GenerateActivity(userFarm);
                 String date = randAct.getDate();
                 String action = randAct.getAction();
                 String type = randAct.getType();
@@ -74,7 +82,7 @@ public class FarmerSeq {
                 actDA.addActivities(act);
 
                 util.writeLog("Success: " + date + " " + action + " " + type + " successfully inserted");
-                System.out.println(index + " - " + date + " " + action + " " + type + " " + unit + " " + quantity + " " + field + " " + row + " " + farmID + " " + userID);
+                System.out.println(index + ": Farmer " + userID + " - " + date + " " + action + " " + type + " " + unit + " " + quantity + " " + field + " " + row + " " + farmID + " " + userID);
 
                 // increment indexDb
                 index++;

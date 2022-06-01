@@ -51,7 +51,7 @@ public class userDA implements userDAInt{
 
         try {
             conn = dbConnection.createCon();
-            stmt = conn.prepareStatement("SELECT * FROM users");
+            stmt = conn.prepareStatement("SELECT * FROM users ORDER BY ABS(users_id)");
             rst = stmt.executeQuery();;
             int count = 0;
 
