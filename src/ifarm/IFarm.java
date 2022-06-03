@@ -37,13 +37,12 @@ public class IFarm {
             
             // generate random number of farmers, x > 100
             Random rand = new Random();
-            //int numOfFarmers = rand.nextInt(6) + 10;
-            int numOfFarmers = 1;
+            int numOfFarmers = rand.nextInt(10) + 10;
             System.out.printf("Number of Farmers: %d \n", numOfFarmers);
             // generate random number of activities for each farmers, x > 1000
             int[] numOfActivities = new int[numOfFarmers];
             for (int i = 0; i < numOfFarmers; i++) {
-                numOfActivities[i] =  rand.nextInt(100) + 10;
+                numOfActivities[i] =  rand.nextInt(10) + 100;
                 System.out.printf("Farmer %d : %d activities \n", i, numOfActivities[i]);
             }
             

@@ -21,7 +21,7 @@ private int indexDb;
         try {
             // generate activities
             for (int i = 0; i < numOfActivities; i++) {
-                GenerateActivity randAct = new GenerateActivity();
+                GenerateActivitySeq randAct = new GenerateActivitySeq();
                 String date = randAct.getDate();
                 String action = randAct.getAction();
                 String type = randAct.getType();

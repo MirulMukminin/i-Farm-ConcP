@@ -5,6 +5,7 @@
 package ifarm.dataAccess;
 
 import ifarm.data.Activity;
+import ifarm.data.Farms;
 import ifarm.dbConnection;
 
 /**
@@ -14,6 +15,7 @@ import ifarm.dbConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class activityDA {
@@ -52,4 +54,38 @@ public class activityDA {
         return message;
     }
     
+    public Activity getActivitiesByFarm(String farm, String field, String row, String action) throws SQLException {
+        Connection con = null;
+        PreparedStatement stmt = null;
+        ResultSet rst = null;
+
+        try{
+            con = dbConnection.createCon();
+            stmt = con.prepareStatement("SELECT * FROM `activities` WHERE `farmId` = ? AND `field` = ? AND `row` = ? AND `action` = ? ORDER BY `date` DESC LIMIT 1");
+            stmt.setString(1, farm);
+            stmt.setString(2, field);
+            stmt.setString(3, row);
+            stmt.setString(4, action);
+            rst = stmt.executeQuery();
+
+            //get all farm data
+            Activity act = new Activity();
+            while(rst.next()){
+                act.setId(rst.getString("activities_id"));
+                act.setDate(rst.getString("date"));
+                act.setAction(rst.getString("action"));
+                act.setType(rst.getString("type"));
+                act.setUnit(rst.getString("unit"));
+                act.setQuantity(rst.getString("quantity"));
+                act.setField(rst.getString("field"));
+                act.setRow(rst.getString("row"));
+                act.setFarmId("farmId");
+                act.setUserId("userId");
+            }
+                
+            return act;
+        }finally{
+            con.close();
+        }
+    }
 }

@@ -7,13 +7,19 @@ public class Farms {
     private String plants;
     private String fertilizers;
     private String pesticides;
-
-    public Farms(String name, String address, String plants, String fertilizers, String pesticides) {
+    private String activities;
+    private String field;
+    private String row;
+    
+    public Farms(String name, String address, String plants, String fertilizers, String pesticides, String activities, String field, String Row) {
         this.name = name;
         this.address = address;
         this.plants = plants;
         this.fertilizers = fertilizers;
         this.pesticides = pesticides;
+        this.activities = activities;
+        this.field = field;
+        this.row = row;
     }
 
     public Farms() {

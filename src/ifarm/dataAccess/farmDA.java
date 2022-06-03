@@ -49,7 +49,7 @@ public class farmDA implements farmDAInt{
 
         try {
             conn = dbConnection.createCon();
-            stmt = conn.prepareStatement("SELECT * FROM farms");
+            stmt = conn.prepareStatement("SELECT * FROM farms ORDER BY ABS(farms_id)");
             rst = stmt.executeQuery();
             int count = 0;
 

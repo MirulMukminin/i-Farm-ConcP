@@ -27,7 +27,7 @@ public class fertDA implements fertDAInt{
 
         try {
             conn = dbConnection.createCon();
-            stmt = conn.prepareStatement("SELECT * FROM fertilizers ORDER BY fertilizers_id");
+            stmt = conn.prepareStatement("SELECT * FROM fertilizers ORDER BY ABS(fertilizers_id)");
             rst = stmt.executeQuery();
             int count = 0;
 
