@@ -54,17 +54,17 @@ public class IFarm {
             plantStatus = farmerSimulator.generatePlantFile();
 
             // generate farmers and activities sequentially
-//            FarmerSeq fs = new FarmerSeq();
-//            fs.generateFarmersActivitiesSeq(numOfFarmers, numOfActivities);
+            FarmerSeq fs = new FarmerSeq();
+            fs.generateFarmersActivitiesSeq(numOfFarmers, numOfActivities);
         
             // generate farmers and activities concurrently
-            LogAccess farmerLog = new LogAccess();
-            ExecutorService pool = Executors.newFixedThreadPool(numOfFarmers);
-                for(int i = 0; i<numOfFarmers; i++){
-                   pool.execute(new Farmer(farmerLog, numOfActivities[i]));
-                }
-
-            pool.shutdown();
+//            LogAccess farmerLog = new LogAccess();
+//            ExecutorService pool = Executors.newFixedThreadPool(numOfFarmers);
+//                for(int i = 0; i<numOfFarmers; i++){
+//                   pool.execute(new Farmer(farmerLog, numOfActivities[i]));
+//                }
+//
+//            pool.shutdown();
 
         } catch (SQLException | JSONException e) {
         }
