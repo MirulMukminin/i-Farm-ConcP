@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import org.json.JSONException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 /**
  *
@@ -63,11 +65,25 @@ public class Utility {
         }
     }
     
-    public String getRandomDate() {
+     public String getRandomDate(String action) {
         // generate random number of month and date
         Random rand = new Random();
-        int month = rand.nextInt(12) + 1;
-        int day = 1;
+        int month = 1;
+        // 1-3
+        if (action.equalsIgnoreCase("sowing")) {
+            month = rand.nextInt(4) + 1;
+            // 4-8
+        } else if (action.equalsIgnoreCase("pesticide") || action.equalsIgnoreCase("fertilizer")) {
+            month = rand.nextInt(7) + 4;
+            // 9-10
+        } else if (action.equalsIgnoreCase("harvest")) {
+            month = rand.nextInt(2) + 9;
+            // 10-12
+        } else if (action.equalsIgnoreCase("sales")) {
+            month = rand.nextInt(2) + 11;
+        } 
+         
+        int day;
         if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
             day = rand.nextInt(31) + 1;
         } else if (month == 2) {
@@ -77,7 +93,8 @@ public class Utility {
         }
         // pad number with 0
         // combine the date with yyyy-mm-dd format
-        String date = "2021-" + padLeftZeros(String.valueOf(month), 2) + "-" + padLeftZeros(String.valueOf(day), 2);
+        int year = 2021;
+        String date = year + "-" + padLeftZeros(String.valueOf(month), 2) + "-" + padLeftZeros(String.valueOf(day), 2);
         return date;
     }
 
@@ -93,5 +110,12 @@ public class Utility {
 
         return sb.toString();
     }    
+    
+    public ArrayList<String> stringToArray(String data) {
+        String array[] = data.replace("[","").replace("]","").replace("\"","").replace(" ","").replace("\\", "").split(",");
+        ArrayList<String> list = new ArrayList<String>();
+        Collections.addAll(list, array);
+        return list;
+    }
     
 }

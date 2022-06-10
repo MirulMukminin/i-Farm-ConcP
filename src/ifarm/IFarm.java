@@ -2,6 +2,7 @@ package ifarm;
 
 import ifarm.controller.ActivityLog;
 import ifarm.controller.Farmer;
+import ifarm.controller.FarmerSeq;
 import ifarm.controller.FarmerSimulator;
 import ifarm.data.Farmers;
 import java.sql.Connection;
@@ -43,8 +44,8 @@ public class IFarm {
             plantStatus = farmerSimulator.generatePlantFile();
 
             // generate farmers and activities sequentially
-            /*FarmerSeq fs = new FarmerSeq();
-            fs.generateFarmersActivitiesSeq(numOfFarmers);*/
+//            FarmerSeq fs = new FarmerSeq();
+//            fs.generateFarmersActivitiesSeq(numOfFarmers);
         
             // generate farmers and activities concurrently
             ActivityLog actlog = new ActivityLog();
@@ -58,6 +59,9 @@ public class IFarm {
 
         } catch (InterruptedException | SQLException | JSONException e) {
         }
+        
+//         } catch (SQLException | JSONException e) {
+//        }
 
 
         

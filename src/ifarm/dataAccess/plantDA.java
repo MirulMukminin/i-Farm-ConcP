@@ -26,7 +26,7 @@ public class plantDA implements plantDAInt{
 
         try {
             conn = dbConnection.createCon();
-            stmt = conn.prepareStatement("SELECT * FROM plants");
+            stmt = conn.prepareStatement("SELECT * FROM plants ORDER BY ABS(plants_id)");
             rst = stmt.executeQuery();
             int count = 0;
 

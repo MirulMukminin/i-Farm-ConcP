@@ -28,7 +28,7 @@ public class pestDA implements pestDAInt{
 
         try {
             conn = dbConnection.createCon();
-            stmt = conn.prepareStatement("SELECT * FROM pesticides");
+            stmt = conn.prepareStatement("SELECT * FROM pesticides ORDER BY ABS(pesticides_id)");
             rst = stmt.executeQuery();;
             int count = 0;
 
