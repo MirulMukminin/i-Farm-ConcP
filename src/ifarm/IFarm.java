@@ -170,9 +170,9 @@ public class IFarm {
                     if(attempt>0){
                         pass=-1;
                         hist = "Recover " + map.get(userID)+ " Attempt: "+ attempt + " Fail: User "+userID+" Activity "+thread.getNumOfAct();
-                        String pool = "pool-"+(attempt+1)+"-thread-"+(i+1);
-                        name.add(pool);
-                        util.writeLog(pool+" Fail: Timeout");
+                        String pool1 = "pool-"+(attempt+1)+"-thread-"+(i+1);
+                        name.add(pool1);
+                        util.writeLog(pool1+" Fail: Timeout");
                     }
                     //fail for the first time
                     else{
