@@ -26,16 +26,17 @@ import java.util.logging.Logger;
 
 public class FarmerSeq {
     
-        public void generateFarmersActivitiesSeq(int numOfFarmers) {
+        public void generateFarmersActivitiesSeq(int numOfFarmers, int[] numOfActivities) {
 
         try {
             Random rand = new Random();
             Utility util = new Utility();
             String users = util.readFile("farmer.txt");
             JSONArray userArr = new JSONArray(users);
-            List<String> userFarms = new ArrayList<>();
             JSONObject userObj = null;
             String userID = "";
+            List<String> userFarm = new ArrayList<>();
+            List<String> userList = new ArrayList<>();
 
             if (userArr.length() <= 0) {
                 userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
@@ -45,20 +46,18 @@ public class FarmerSeq {
             // generate farmers
             int indexDb = 1;
             for (int i = 0; i < numOfFarmers; i++) {
-
-               if (userArr.length() != 0) {
+                if (userArr.length() != 0) {
                     // choose random farmer
                     userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
                     // get farmer id
                     userID = userObj.getString("id");
                     // get farmer details
                     // userFarm = util.stringToArray(userObj.getString("farms"));
-                    userFarms = util.stringToArray(userObj.getString("farms"));
+                    userFarm = util.stringToArray(userObj.getString("farms"));
                 }
-                
-                // generate random number to access any random content from the array
-                int numOfActivities = rand.nextInt(10) + 1000;
-                indexDb = generateActivitiesSeq(userID, indexDb, numOfActivities, userFarms);
+
+                // generate activities random number to access any random content from the array
+                indexDb = generateActivitiesSeq(userID, userFarm, indexDb, numOfActivities[i]);
                 indexDb++;
             }
 
@@ -68,7 +67,7 @@ public class FarmerSeq {
 
     }
     
-    public int generateActivitiesSeq(String userID, int index, int numOfActivities, List<String> userFarms) throws FileNotFoundException, JSONException {
+    public int generateActivitiesSeq(String userID, List<String> userFarms, int index, int numOfActivities) throws FileNotFoundException, JSONException {
         Utility util = new Utility();
         Random rand = new Random();
         // get the farm belong to the farmer

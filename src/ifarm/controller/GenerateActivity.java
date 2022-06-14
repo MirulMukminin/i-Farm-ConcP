@@ -58,23 +58,37 @@ private JSONObject farmObj;
             String farmPesticides;
             
             String[] actions = {"sowing", "harvest", "pesticide", "fertilizer", "sales"};
+
+            // get random action
             action = actions[rand.nextInt(actions.length)];
+            // for the first round of field and row, increment 0 for year
             date = util.getRandomDate(action);
-            quantity = String.valueOf(rand.nextInt(11));
-            field = String.valueOf(rand.nextInt(10));
-            row = String.valueOf(rand.nextInt(10));
+            // get the farm id
+            farmID = farmObj.getString("id");            
+            
+//            action = actions[rand.nextInt(actions.length)];
+//            date = util.getRandomDate(action);
+//            quantity = String.valueOf(rand.nextInt(11));
+//            field = String.valueOf(rand.nextInt(10));
+//            row = String.valueOf(rand.nextInt(10));
             
 //            if (farmArr.length() <= 0) {
 //                farmObj = farmArr.getJSONObject(rand.nextInt(farmArr.length()));
 //                farmID = farmObj.getString("id");
 //            }
         // get random type of plant, fertilizer and pesticide
+        
+            // initialize random value for quantity, field and row
+            quantity = String.valueOf(rand.nextInt(100) + 1);
+            field = String.valueOf(rand.nextInt(4) + 4);
+            row = String.valueOf(rand.nextInt(4) + 4); 
+        
             ArrayList<String> farmPlantArr;
             ArrayList<String> farmPestArr;
             ArrayList<String> farmFertArr;
             
             if (action.equalsIgnoreCase("sowing") || action.equalsIgnoreCase("harvest") || action.equalsIgnoreCase("sales")) {
-                if (plantArr.length() <= 0) {
+                if (plantArr.length() >= 0) {
                     // get the farm plants
                     farmPlants = farmObj.getString("plants");
                     // convert the string to array
@@ -86,7 +100,7 @@ private JSONObject farmObj;
                     unit = plantObj.getString("unitType");
                 }
             } else if (action.equalsIgnoreCase("pesticide")) {
-                if (pestArr.length() <= 0) {
+                if (pestArr.length() >= 0) {
                 // get the farm pesticide
                 farmPesticides = farmObj.getString("pesticides");
                 // convert the string to array
@@ -98,7 +112,7 @@ private JSONObject farmObj;
                 unit = pestObj.getString("unitType");
                 }
             } else if (action.equalsIgnoreCase("fertilizer")) {
-                if (fertArr.length() <= 0) {
+                if (fertArr.length() >= 0) {
                 // get the farm fertilizer
                 farmFertilizers = farmObj.getString("fertilizers");
                 // convert the string to array

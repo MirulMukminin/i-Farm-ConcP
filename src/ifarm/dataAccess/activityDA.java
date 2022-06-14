@@ -18,6 +18,16 @@ import java.sql.SQLException;
 
 public class activityDA {
     
+      public String truncateActivities() throws SQLException {
+        Connection conn = dbConnection.createCon();
+        PreparedStatement stmt = conn.prepareStatement("TRUNCATE activities");
+        String message = "";
+        if (stmt.execute()) {
+            message = "Activities Table is Truncated";
+        }
+        return message;
+    }
+    
         public void addActivities(Activity act) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
