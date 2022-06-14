@@ -118,4 +118,31 @@ public class Utility {
         return list;
     }
     
+    public void writeLog1(String text) {
+        try {
+            // create the log file if it is not existed yet
+            // String rootPath = "C:/Users/user/OneDrive - 365.um.edu.my/Degree Life/SEM 6/Concurrent Programming (WIF3003)/Assignment/iFarm v1/";
+            File log = new File("ThreadLog.txt");
+
+            if (!log.exists()) {
+                log.createNewFile();
+                System.out.println("File created: " + log.getName());
+            }
+
+            // get current timestamp
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            // write the log into the log file
+            FileWriter fw = new FileWriter(log.getName(), true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write( sdf.format(timestamp) + " >> " +  text + "\n");
+            bw.close();
+
+        } catch (IOException e) {
+            System.out.println("An error occured. The log file cannot be created");
+            e.printStackTrace();
+        }
+    }
+
 }
