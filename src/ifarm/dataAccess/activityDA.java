@@ -26,7 +26,25 @@ public class activityDA {
             message = "Activities Table is Truncated";
         }
         return message;
-    }
+     }
+    
+       public String deleteFailActivities(String userId, String farmId) throws SQLException {
+        Connection conn = dbConnection.createCon();
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM activities WHERE userId=? AND farmId=? ;");
+        stmt.setString(1, userId);
+        stmt.setString(2, farmId);
+        String message = "";
+        
+        System.out.println("userid:" + userId + " farmid:" + farmId);
+        
+        if (stmt.executeUpdate() > 0) {
+            message = "Failed Activities is Deleted";
+        }
+        else
+            message = "Fail";
+        return message;
+        }
+
     
         public void addActivities(Activity act) throws SQLException {
         Connection conn = null;
