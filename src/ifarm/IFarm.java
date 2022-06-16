@@ -1,6 +1,7 @@
 package ifarm;
 
 import ifarm.controller.ActivityLog;
+import ifarm.controller.DisasterSimulation;
 import ifarm.controller.Farmer;
 import ifarm.controller.Farmer1;
 import ifarm.controller.FarmerSeq;
@@ -93,7 +94,7 @@ public class IFarm {
     }catch (InterruptedException | SQLException | JSONException e) {
         }
     }
-    public static void main(String[] args) throws SQLException, JSONException, IOException, ExecutionException {
+    public static void main(String[] args) throws SQLException, JSONException, IOException, ExecutionException, InterruptedException {
         
         
         
