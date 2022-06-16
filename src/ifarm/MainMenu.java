@@ -18,7 +18,7 @@ import org.json.JSONException;
  */
 public class MainMenu {
     
-    public static void main(String[] args) throws SQLException, JSONException, IOException, ExecutionException {
+    public static void main(String[] args) throws SQLException, JSONException, IOException, ExecutionException, InterruptedException {
         
         Scanner sc = new Scanner(System.in);
         
