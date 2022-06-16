@@ -1,4 +1,4 @@
-package ifarm.controller;
+/*package ifarm.controller;
 //test
 import ifarm.data.Activity;
 import ifarm.dataAccess.activityDA;
@@ -114,6 +114,95 @@ private int indexDb;
               Utility util = new Utility();
               util.writeLog(text);
             } finally {
+               lock.unlock();
+        }
+    }
+}*/
+
+package ifarm.controller;
+//test
+import ifarm.data.Activity;
+import ifarm.dataAccess.activityDA;
+import ifarm.dbConnection;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+public class ActivityLog {
+private int indexDb;
+private String date;
+private String action;
+private String type;
+private String quantity;
+private String unit;
+private String field;
+private String row;
+private String farmID;
+private String userID;
+
+    ReentrantLock lock = new ReentrantLock();
+    
+        
+    public int generateActivities(String userID, int index, List<String> userFarms) throws FileNotFoundException, InterruptedException {
+        try {
+            this.userID = userID;
+            // generate activities
+            Utility util = new Utility();
+            Random rand = new Random();
+            // get the farm belong to the farmer
+            // get farms from farmer
+            String farms = util.readFile("farms.txt");
+            JSONArray farmArr = new JSONArray(farms);
+            JSONObject farmObj = null;
+            
+            if (!userFarms.isEmpty()) {
+                farmID = userFarms.get(rand.nextInt(userFarms.size()));
+                // get the selected farm details
+                farmObj = farmArr.getJSONObject(Integer.valueOf(farmID)-1);
+            }  
+            
+            GenerateActivity randAct = new GenerateActivity(userFarms, farmObj);
+            date = randAct.getDate();
+            action = randAct.getAction();
+            type = randAct.getType();
+            quantity = randAct.getQuantity();
+            unit = randAct.getUnit();
+            field = randAct.getField();
+            row = randAct.getRow();
+                
+            //Write to log
+            writeLog(Thread.currentThread().getName() + " " + index +" Success: " + date + " " + action + " " + type + " successfully inserted");
+            //System.out.println(Thread.currentThread().getName() + " " +index + " - " + date + " " + action + " " + type + " " + unit + " " + quantity + " " + field + " " + row + " " + farmID + " " + userID);
+
+        } catch (JSONException ex) {
+            Logger.getLogger(ActivityLog.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return index;
+    }
+    
+        public void writeLog(String text) throws InterruptedException {
+        lock.lock();
+            try {
+            Utility util = new Utility();
+            //Write to database
+            Activity act = new Activity(String.valueOf(indexDb), date, action, type, unit, quantity, field, row, farmID, userID);
+            activityDA actDA = new dbConnection().getActivityDA();
+            actDA.addActivities(act);
+            util.writeLog(text);
+            indexDb++;
+            } 
+            catch (SQLException ex) {
+            Logger.getLogger(ActivityLog.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        finally {
                lock.unlock();
         }
     }
