@@ -2,6 +2,7 @@
 
 package DataVis;
 
+import ifarm.controller.Timer;
 import ifarm.data.Activity;
 import ifarm.data.Farmers;
 import ifarm.data.Farms;
@@ -38,6 +39,8 @@ public class DriverStream {
     static List<Pesticides> pestList= new ArrayList();
     static List<Quantity> quantityList= new ArrayList();
     Scanner sc = new Scanner(System.in);
+    static Timer timer = new Timer();
+    static double totalTime ;
     public static void main(String[] args) throws SQLException, JSONException{
         
         Connection con = dbConnection.createCon();
@@ -173,6 +176,7 @@ public class DriverStream {
         String id ;
                        
         System.out.println("Enter the farm's name:");
+        timer.setStartTime(); //timer start
         String name = sc.nextLine();
         Optional<Farms> matchingObject = 
             farmList
@@ -194,6 +198,8 @@ public class DriverStream {
                 .forEach(act -> 
                      printLog(act.getId(), LocalDate.parse(act.getDate(), formatter), act.getAction(), act.getType(), act.getFarmId() , act.getField(), act.getRow(), act.getUserId(), Integer.parseInt(act.getQuantity()), act.getUnit())                    
                 );
+        timer.setEndTime(); //stop timer
+        totalTime += timer.calcDuration(); 
     }
     
     public static void option2() throws SQLException{
@@ -202,6 +208,7 @@ public class DriverStream {
         String id;
         
         System.out.println("Enter the farmer's name:");
+        timer.setStartTime(); //start timer
         String name = sc.next();
         Optional<Farmers> matchingObject = 
             farmerList
@@ -223,6 +230,8 @@ public class DriverStream {
                 .forEach(act -> 
                      printLog(act.getId(), LocalDate.parse(act.getDate(), formatter), act.getAction(), act.getType(), act.getFarmId() , act.getField(), act.getRow(), act.getUserId(), Integer.parseInt(act.getQuantity()), act.getUnit())
                 );
+        timer.setEndTime();
+        totalTime += timer.calcDuration();
     }
     
     public static void option3() throws SQLException{
@@ -231,6 +240,7 @@ public class DriverStream {
         String id;
                      
         System.out.println("Enter the farm's name:");
+        timer.setStartTime(); //start timer
         String fname = sc.nextLine();
         Optional<Farms> matchingObject = 
             farmList
@@ -347,7 +357,9 @@ public class DriverStream {
                              printLog(act.getId(), LocalDate.parse(act.getDate(), formatter), act.getAction(), act.getType(), act.getFarmId() , act.getField(), act.getRow(), act.getUserId(), Integer.parseInt(act.getQuantity()), act.getUnit())
                         );
                 }
-        }   
+        }
+        timer.setEndTime();
+        totalTime += timer.calcDuration();
     }
     
     public static void option4() throws SQLException{
@@ -357,6 +369,7 @@ public class DriverStream {
         String id;
                      
         System.out.println("Enter the farm's name:");
+        timer.setStartTime(); //start timer
         String fname = sc.nextLine();
         Optional<Farms> matchingObject = 
             farmList
@@ -488,8 +501,9 @@ public class DriverStream {
                         System.out.println("No record found");
                     }
                 }
-        }  
-        
+        }
+        timer.setEndTime();
+        totalTime += timer.calcDuration();
     }
     
     public static void option5() throws SQLException{
@@ -499,6 +513,7 @@ public class DriverStream {
         String id;
                      
         System.out.println("Enter the farm's name:");
+        timer.setStartTime();
         String fname = sc.nextLine();
         Optional<Farms> matchingObject = 
             farmList
@@ -642,11 +657,14 @@ public class DriverStream {
                         System.out.println("No record found");
                     }
                 }
-        }  
+        }
+        timer.setEndTime();
+        totalTime += timer.calcDuration();
     }
     
     public static void option0() throws SQLException{
         System.out.println("Thank you");
+        System.out.println("Total time: "+ totalTime);
         System.exit(0);
     }
     
