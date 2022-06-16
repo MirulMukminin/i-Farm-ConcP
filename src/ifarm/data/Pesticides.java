@@ -8,38 +8,43 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Pesticides {
-    
+    private String pestID;
     private String name;
     private String unitType;
 
-    public Pesticides(String name, String unitType) {
+    public Pesticides(String pestID,String name, String unitType) {
+        this.pestID = pestID;
         this.name = name;
         this.unitType = unitType;
     }
 
     public Pesticides() {
     }
-
-    public String getPestID() {
-        Connection con = null;
-        PreparedStatement stmt = null;
-        ResultSet rst = null;
-        String id = null;
-        try{
-            con = dbConnection.createCon();
-            stmt = con.prepareStatement("SELECT * FROM farms WHERE name ="+getName());
-            rst = stmt.executeQuery();
-            id = rst.getString("pesticides_id");
-//            //get all farm name
-//            while(rst.next()){
-//                return rst.getString("pesticides_id");
-//            }
-            
-        }catch(SQLException e){
-             e.printStackTrace();
-        }
-        return id;
+    
+     public String getPestID() {
+        return pestID;
     }
+
+//    public String getPestID2() {
+//        Connection con = null;
+//        PreparedStatement stmt = null;
+//        ResultSet rst = null;
+//        String id = null;
+//        try{
+//            con = dbConnection.createCon();
+//            stmt = con.prepareStatement("SELECT * FROM farms WHERE name ="+getName());
+//            rst = stmt.executeQuery();
+//            id = rst.getString("pesticides_id");
+////            //get all farm name
+////            while(rst.next()){
+////                return rst.getString("pesticides_id");
+////            }
+//            
+//        }catch(SQLException e){
+//             e.printStackTrace();
+//        }
+//        return id;
+//    }
 
     public String getName() {
         return name;
@@ -57,5 +62,7 @@ public class Pesticides {
         this.unitType = unitType;
     }
     
-    
+    public void setPestID(String pestID) {
+        this.pestID = pestID;
+    }
 }

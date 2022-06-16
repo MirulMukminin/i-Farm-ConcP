@@ -2,13 +2,15 @@
 package ifarm.data;
 
 public class Farms {
+    private String farmID;
     private String name;
     private String address;
     private String plants;
     private String fertilizers;
     private String pesticides;
 
-    public Farms(String name, String address, String plants, String fertilizers, String pesticides) {
+    public Farms(String farmID,String name, String address, String plants, String fertilizers, String pesticides) {
+        this.farmID = farmID;
         this.name = name;
         this.address = address;
         this.plants = plants;
@@ -17,6 +19,10 @@ public class Farms {
     }
 
     public Farms() {
+    }
+    
+    public String getFarmID() {
+        return farmID;
     }
 
     public String getName() {
@@ -59,5 +65,8 @@ public class Farms {
         this.pesticides = pesticides;
     }
     
+    public void setFarmID(String farmID) {
+        this.farmID = farmID;
+    }
     
 }

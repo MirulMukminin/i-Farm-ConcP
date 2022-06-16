@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Farmers {
+    private String farmerID;
     private String farmID;
     private String name;
     private String email;
@@ -15,7 +16,8 @@ public class Farmers {
     private String password;
     private String farms;
 
-    public Farmers(String farmID, String name, String email, String phoneNum, String password, String farms) {
+    public Farmers(String farmerID,String farmID, String name, String email, String phoneNum, String password, String farms) {
+        this.farmerID = farmerID;
         this.farmID = farmID;
         this.name = name;
         this.email = email;
@@ -25,6 +27,7 @@ public class Farmers {
     }
 
     public Farmers() {
+        this.farmerID = farmerID;
         this.farmID = farmID;
         this.name = name;
         this.email = email;
@@ -33,6 +36,10 @@ public class Farmers {
         this.farms = farms;
     }
 
+    public String getFarmerID() {
+        return farmerID;
+    }
+    
     public String getFarmID() {
         return farmID;
     }
@@ -81,5 +88,8 @@ public class Farmers {
         this.farms = farms;
     }
     
+      public void setFarmerID(String farmerID) {
+        this.farmerID = farmerID;
+    }
     
 }
