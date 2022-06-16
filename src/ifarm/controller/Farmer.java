@@ -11,7 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Farmer implements Callable<Integer> {
+public class Farmer implements Runnable {
 ActivityLog log;
 private int index;
 private int numOfActivities;
@@ -21,12 +21,12 @@ private int numOfActivities;
         this.numOfActivities = numOfActivities;
     }
     
-    public Integer call() {
+
+    public void run() {
         
             try {
             Random rand = new Random();
             Utility util = new Utility();
-            Timer timer = new Timer();
             String users = util.readFile("farmer.txt");
             JSONArray userArr = new JSONArray(users);
             List<String> userFarms = new ArrayList<>();
@@ -44,7 +44,6 @@ private int numOfActivities;
             
 
             // generate activities
-            timer.setStartTime();
             for (int i = 0; i < numOfActivities; i++) {
                 index = log.generateActivities(userID, index, userFarms);
                 index++;
@@ -56,8 +55,6 @@ private int numOfActivities;
         } catch (InterruptedException ex) {
         Logger.getLogger(Farmer.class.getName()).log(Level.SEVERE, null, ex);
     }
-    return 1;
-        
     }
     
 }

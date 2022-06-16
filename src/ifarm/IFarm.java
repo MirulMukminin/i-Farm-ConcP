@@ -2,6 +2,7 @@ package ifarm;
 
 import ifarm.controller.ActivityLog;
 import ifarm.controller.Farmer;
+import ifarm.controller.Timer;
 import ifarm.controller.Farmer1;
 import ifarm.controller.FarmerSeq;
 import ifarm.controller.FarmerSimulator;
@@ -85,8 +86,7 @@ public class IFarm {
     }
     public static void main(String[] args) throws SQLException, JSONException, IOException, ExecutionException {
         
-        
-        
+       
         FarmerSimulator farmerSimulator = new FarmerSimulator();
         Farmers[] farmer = null;
         int user = 0;
@@ -123,12 +123,32 @@ public class IFarm {
             pestStatus = farmerSimulator.generatePesticidesFile();
             fertStatus = farmerSimulator.generateFertilizersFile();
             plantStatus = farmerSimulator.generatePlantFile();
-
-//             generate farmers and activities sequentially
-            FarmerSeq fs = new FarmerSeq();
-            fs.generateFarmersActivitiesSeq(numOfFarmers, numOfActivities);
-        
+            Timer timer = new Timer();
+//            String message1 = actDA.truncateActivities();
+//            System.out.println(message1);
+////          generate farmers and activities sequentially
+//            
+//            FarmerSeq fs = new FarmerSeq();
+//            timer.setStartTime();
+//            fs.generateFarmersActivitiesSeq(numOfFarmers, numOfActivities);
+//            timer.setEndTime();
+//            System.out.println("Sequential ex time: " + timer.calcDuration());
             // generate farmers and activities concurrently
+            ActivityLog actlog = new ActivityLog();
+            
+            timer.setStartTime();
+            ExecutorService pool = Executors.newFixedThreadPool(numOfFarmers);
+                for(int i = 0; i<numOfFarmers; i++){
+                  pool.execute(new Farmer(numOfActivities[i], actlog));
+           }
+           pool.shutdown();
+           try{
+               pool.awaitTermination(1, TimeUnit.DAYS); }
+           catch(InterruptedException ex){ 
+           }
+           timer.setEndTime();
+           
+           System.out.println("Ex time : "+ timer.calcDuration());
 //           ActivityLog actlog = new ActivityLog();
 //            ExecutorService pool = Executors.newFixedThreadPool(numOfFarmers);
 //                for(int i = 0; i<numOfFarmers; i++){
