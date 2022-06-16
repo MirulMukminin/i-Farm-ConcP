@@ -16,8 +16,9 @@ ActivityLog log;
 private int index;
 private int numofThread;
 private String userID;
+private String farmID;
 private int numOfActivities;
-private List<String> userFarms = new ArrayList<>();
+
 
     public Farmer1(int numOfActivities, ActivityLog log){
         this.log = log;
@@ -32,10 +33,7 @@ private List<String> userFarms = new ArrayList<>();
         return numOfActivities;
     }
 
-    public List<String> getUserFarms() {
-        return userFarms;
-    }
-
+  
     public void setUserID(String userID) {
         this.userID = userID;
     }
@@ -44,11 +42,16 @@ private List<String> userFarms = new ArrayList<>();
         this.numOfActivities = numOfAct;
     }
 
-    public void setUserFarms(List<String> userFarms) {
-        this.userFarms = userFarms;
+    public String getFarmID() {
+        return farmID;
+    }
+
+    public void setFarmID(String farmID) {
+        this.farmID = farmID;
     }
 
     
+
     @Override
     public String call() throws Exception{
         Thread.sleep(5);
@@ -58,7 +61,11 @@ private List<String> userFarms = new ArrayList<>();
             String users = util.readFile("farmer.txt");
             JSONArray userArr = new JSONArray(users);
             JSONObject userObj = null;
-            
+            String farms = util.readFile("farms.txt");
+            JSONArray farmArr = new JSONArray(farms);
+            JSONObject farmObj = null;
+            List<String> userFarms = new ArrayList<>();
+
 
             if (userArr.length() != 0 && userID==null) {
             // choose random farmer
@@ -67,13 +74,19 @@ private List<String> userFarms = new ArrayList<>();
             userID = userObj.getString("id");
             // get farmer details
             userFarms = util.stringToArray(userObj.getString("farms"));
+            farmID = userFarms.get(rand.nextInt(userFarms.size()));
+            // get the selected farm details
+            farmObj = farmArr.getJSONObject(Integer.valueOf(farmID)-1);
             }
             
-
+            if(!farmID.isEmpty())
+                farmObj = farmArr.getJSONObject(Integer.valueOf(farmID)-1);
+                    
+       
             // generate activities
             for (int i = 0; i < numOfActivities; i++) {
                 if(!Thread.currentThread().interrupted()){
-                    index = log.generateActivities(userID, index, userFarms);
+                    index = log.generateActivities1(userID, index, farmID,farmObj);
                     index++;
                 }
             }
@@ -86,5 +99,7 @@ private List<String> userFarms = new ArrayList<>();
     }
        return Thread.currentThread().getName() + " Done!"; 
     }
+
+    
     
 }
