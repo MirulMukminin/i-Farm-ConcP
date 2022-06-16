@@ -21,14 +21,15 @@ public class userDA implements userDAInt{
         ResultSet rst = null;
         
         try{
-            int searchID = Integer.parseInt(id);
             con = dbConnection.createCon();
-            stmt = con.prepareStatement("SELECT * FROM users WHERE users_id = '" + searchID + "'");
+            stmt = con.prepareStatement("SELECT * FROM users WHERE users_id = ? LIMIT 1");
+            stmt.setString(1, id);
             rst = stmt.executeQuery();
             
             //get all farmer data
             Farmers f = new Farmers();
-            while(rst.next()){       
+            while(rst.next()){   
+                f.setFarmerID(rst.getString("users_id"));
                 f.setName(rst.getString("name"));
                 f.setEmail(rst.getString("email"));
                 f.setPassword(rst.getString("password"));

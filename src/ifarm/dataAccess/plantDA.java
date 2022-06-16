@@ -59,24 +59,25 @@ public class plantDA implements plantDAInt{
         }
     }
     
-    public Plants getFarmByID(String id) throws SQLException{
+    public Plants getPlantByID(String id) throws SQLException{
             Connection con = null;
             PreparedStatement stmt = null;
             ResultSet rst = null;
 
             try{
                 con = dbConnection.createCon();
-                stmt = con.prepareStatement("SELECT * FROM plants WHERE plants_id = '" + id + "'");
+                stmt = con.prepareStatement("SELECT * FROM plants WHERE plants_id = ?");
+                stmt.setString(1, id);
                 rst = stmt.executeQuery();
 
-                Plants fert = new Plants();
+                Plants plant = new Plants();
                 while(rst.next()){
-                    fert.setPlantID(rst.getString("fertilizers_id"));
-                    fert.setName(rst.getString("name"));
-                    fert.setUnitType(rst.getString("unitType"));
+                    plant.setPlantID(rst.getString("plants_id"));
+                    plant.setName(rst.getString("name"));
+                    plant.setUnitType(rst.getString("unitType"));
                 }
                 
-                return fert;
+                return plant;
             }finally{
              con.close();
             }  

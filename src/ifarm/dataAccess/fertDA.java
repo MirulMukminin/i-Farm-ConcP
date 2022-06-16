@@ -68,7 +68,8 @@ public class fertDA implements fertDAInt{
 
             try{
                 con = dbConnection.createCon();
-                stmt = con.prepareStatement("SELECT * FROM fertilizers WHERE fertilizers_id = '" + id + "'");
+                stmt = con.prepareStatement("SELECT * FROM fertilizers WHERE fertilizers_id = ?");
+                stmt.setString(1, id);
                 rst = stmt.executeQuery();
 
                 Fertilizers fert = new Fertilizers();

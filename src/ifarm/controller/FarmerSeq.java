@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package ifarm.controller;
 
 /**
@@ -11,6 +7,10 @@ package ifarm.controller;
 
 import ifarm.data.Activity;
 import ifarm.dataAccess.activityDA;
+import ifarm.dataAccess.userDA;
+import ifarm.data.Farmers;
+import ifarm.data.Farms;
+import ifarm.dataAccess.farmDA;
 import ifarm.dbConnection;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
@@ -25,9 +25,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class FarmerSeq {
-    private Timer timer = new Timer();
     
-    public void generateFarmersActivitiesSeq(int numOfFarmers, int[] numOfActivities, JSONArray userArr,JSONArray farmsArr,JSONArray plantsArr,JSONArray fertArr,JSONArray pestArr) {
+        public void generateFarmersActivitiesSeq(int numOfFarmers, int[] numOfActivities) {
 
         try {
             Random rand = new Random();
@@ -37,56 +36,68 @@ public class FarmerSeq {
             JSONObject userObj = null;
             String userID = "";
             List<String> userFarm = new ArrayList<>();
-            
-            timer.setStartTime();
-            if (userArr.length() <= 0) {
-                userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
-                userID = userObj.getString("id");
-            }
+            List<String> userList = new ArrayList<>();
+
+//            if (userArr.length() <= 0) {
+//                userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
+//                userID = userObj.getString("id");
+//            }
 
             // generate farmers
             int indexDb = 1;
             for (int i = 0; i < numOfFarmers; i++) {
-                if (userArr.length() != 0) {
-                    // choose random farmer
-                    userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
-                    // get farmer id
-                    userID = userObj.getString("id");
-                    // get farmer details
-                    // userFarm = util.stringToArray(userObj.getString("farms"));
-                    userFarm = util.stringToArray(userObj.getString("farms"));
-                }
-
+                // get farmer randomly by id
+                userDA userDA = new dbConnection().getUserDA();
+                Farmers farmer = userDA.getFarmerByID(String.valueOf(1+rand.nextInt(100)));
+//                if (userArr.length() != 0) {
+//                    // choose random farmer
+//                    userObj = userArr.getJSONObject();
+//                    // get farmer id
+//                    userID = userObj.getString("id");
+//                    // get farmer details
+//                    // 
+//                    userFarm = util.stringToArray(userObj.getString("farms"));
+//                }
+                userFarm = util.stringToArray(farmer.getFarms());
                 // generate activities random number to access any random content from the array
-                indexDb = generateActivitiesSeq(userID, userFarm, indexDb, numOfActivities[i],farmsArr, plantsArr, fertArr, pestArr);
+                indexDb = generateActivitiesSeq(farmer.getFarmerID(), userFarm , indexDb, numOfActivities[i]);
                 indexDb++;
             }
-            timer.setEndTime();
-        } catch (FileNotFoundException | JSONException e) {
-            e.printStackTrace();
-        }
+
+        }   catch (SQLException ex) {
+                Logger.getLogger(FarmerSeq.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(FarmerSeq.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (JSONException ex) {
+                Logger.getLogger(FarmerSeq.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
     }
     
-    public int generateActivitiesSeq(String userID, List<String> userFarms, int index, int numOfActivities,JSONArray farmArr,JSONArray plantsArr,JSONArray fertArr,JSONArray pestArr ) throws FileNotFoundException, JSONException {
+    public int generateActivitiesSeq(String userID, List<String> userFarms, int index, int numOfActivities) throws FileNotFoundException, JSONException, SQLException {
         Utility util = new Utility();
         Random rand = new Random();
         // get the farm belong to the farmer
         // get farms from farmer
 //            String farms = util.readFile("farms.txt");
 //            JSONArray farmArr = new JSONArray(farms);
-            JSONObject farmObj = null;
+//            JSONObject farmObj = null;
             String farmID = ""; 
+            
+            farmDA farmDA = new dbConnection().getFarmDA();
+            Farms farm = new Farms();
+            
             if (!userFarms.isEmpty()) {
                 farmID = userFarms.get(rand.nextInt(userFarms.size()));
                 // get the selected farm details
-                farmObj = farmArr.getJSONObject(Integer.valueOf(farmID)-1);
+                farm = farmDA.getFarmByID(farmID);
+                //farmObj = farmArr.getJSONObject(Integer.valueOf(farmID)-1);
             }  
         
         try {
             // generate activities
             for (int i = 0; i < numOfActivities; i++) {
-                GenerateActivity1 randAct = new GenerateActivity1(userFarms, farmObj, plantsArr, fertArr, pestArr);
+                GenerateActivity randAct = new GenerateActivity(userFarms, farm);
                 String date = randAct.getDate();
                 String action = randAct.getAction();
                 String type = randAct.getType();
@@ -113,7 +124,4 @@ public class FarmerSeq {
         return index;
     }
     
-    public double getExecutionTime() {
-        return timer.calcDuration();
-    }
 }

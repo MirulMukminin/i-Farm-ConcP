@@ -61,19 +61,20 @@ public class pestDA implements pestDAInt{
         }
     }
 
-        public Pesticides getFarmByID(String id) throws SQLException{
+        public Pesticides getPestByID(String id) throws SQLException{
             Connection con = null;
             PreparedStatement stmt = null;
             ResultSet rst = null;
 
             try{
                 con = dbConnection.createCon();
-                stmt = con.prepareStatement("SELECT * FROM pesticides WHERE pesticides_id = '" + id + "'");
+                stmt = con.prepareStatement("SELECT * FROM pesticides WHERE pesticides_id = ?");
+                stmt.setString(1, id);
                 rst = stmt.executeQuery();
 
                 Pesticides pest = new Pesticides();
                 while(rst.next()){
-                    pest.setPestID(rst.getString("fertilizers_id"));
+                    pest.setPestID(rst.getString("pesticides_id"));
                     pest.setName(rst.getString("name"));
                     pest.setUnitType(rst.getString("unitType"));
                 }

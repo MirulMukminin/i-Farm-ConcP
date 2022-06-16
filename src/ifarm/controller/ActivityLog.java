@@ -1,7 +1,11 @@
 package ifarm.controller;
 //test
 import ifarm.data.Activity;
+import ifarm.data.Farmers;
+import ifarm.data.Farms;
 import ifarm.dataAccess.activityDA;
+import ifarm.dataAccess.farmDA;
+import ifarm.dataAccess.userDA;
 import ifarm.dbConnection;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
@@ -33,14 +37,26 @@ private int indexDb;
             JSONArray farmArr = new JSONArray(farms);
             JSONObject farmObj = null;
             String farmID = ""; 
+            Farmers farmer = new Farmers();
+//            if (!userFarms.isEmpty()) {
+//                farmID = userFarms.get(rand.nextInt(userFarms.size()));
+//                userDA userDA = new dbConnection().getUserDA();
+//                farmer = userDA.getFarmerByID(String.valueOf(1+rand.nextInt(100)));
+//                // get the selected farm details
+//                farmObj = farmArr.getJSONObject(Integer.valueOf(farmID)-1);
+//            }  
+            
+            farmDA farmDA = new dbConnection().getFarmDA();
+            Farms farm = new Farms();
             
             if (!userFarms.isEmpty()) {
                 farmID = userFarms.get(rand.nextInt(userFarms.size()));
                 // get the selected farm details
-                farmObj = farmArr.getJSONObject(Integer.valueOf(farmID)-1);
+                farm = farmDA.getFarmByID(farmID);
+                //farmObj = farmArr.getJSONObject(Integer.valueOf(farmID)-1);
             }  
             
-            GenerateActivity randAct = new GenerateActivity(userFarms, farmObj);
+            GenerateActivity randAct = new GenerateActivity(userFarms, farm);
             String date = randAct.getDate();
             String action = randAct.getAction();
             String type = randAct.getType();
