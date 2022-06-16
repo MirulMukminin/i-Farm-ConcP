@@ -76,7 +76,7 @@ public class Driver {
         System.out.println("Please enter a farm ID");
         Scanner sc = new Scanner(System.in);
         int id = sc.nextInt();
-        timer.getStartTime(); //timer start
+        timer.setStartTime(); //timer start
         //Use name instead of ID for improvement
         PreparedStatement stmt = con.prepareStatement("SELECT * FROM activities WHERE farmid = '" + id + "'");
         ResultSet rst = stmt.executeQuery();

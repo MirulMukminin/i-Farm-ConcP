@@ -5,6 +5,7 @@
 package ifarm;
 
 import DataVis.Driver;
+import DataVis.DriverStream;
 import java.sql.SQLException;
 import java.util.Scanner;
 import org.json.JSONException;
@@ -22,8 +23,9 @@ public class MainMenu {
         while(true){
             System.out.println("Hi. Welcome to i-Farm. Please choose an option.");
         System.out.println("1. Generate activity log text file.");
-        System.out.println("2. View data visualization.");
-        System.out.println("3. Disaster simulation.");
+        System.out.println("2. View data visualization. ");
+        System.out.println("3. View data visualization using stream.");
+        System.out.println("4. Disaster simulation.");
         System.out.println("0. Exit");
         int choice = sc.nextInt();
         switch(choice){
@@ -33,6 +35,8 @@ public class MainMenu {
             case 2:
                 Driver.main(args);
             case 3:
+                DriverStream.main(args);
+            case 4:
                 //code kina here
                 //call main trus ke?
                 break;
