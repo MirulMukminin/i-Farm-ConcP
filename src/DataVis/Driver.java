@@ -5,6 +5,7 @@
 package DataVis;
 
 import ifarm.IFarm;
+import ifarm.controller.Timer;
 import ifarm.data.Activity;
 import ifarm.dbConnection;
 import java.sql.Connection;
@@ -26,6 +27,8 @@ public class Driver {
     
 
     Scanner sc = new Scanner(System.in);
+    static Timer timer = new Timer();
+    static double totalTime ;
     public static void main(String[] args) throws SQLException, JSONException{
 //        IFarm i = new IFarm();
 //        i.main(args);
@@ -73,6 +76,7 @@ public class Driver {
         System.out.println("Please enter a farm ID");
         Scanner sc = new Scanner(System.in);
         int id = sc.nextInt();
+        timer.getStartTime(); //timer start
         //Use name instead of ID for improvement
         PreparedStatement stmt = con.prepareStatement("SELECT * FROM activities WHERE farmid = '" + id + "'");
         ResultSet rst = stmt.executeQuery();
@@ -109,8 +113,8 @@ public class Driver {
                         }
 
         }finally{
-            //timer.stop;
-            //time += timer.time;
+            timer.setEndTime(); //stop timer
+            totalTime += timer.calcDuration();
             con.close();
         }
         
@@ -123,6 +127,7 @@ public class Driver {
         System.out.println("Please enter a farmer ID (Enter X to enter name instead)");
         Scanner sc = new Scanner(System.in);
         String id = sc.next().toUpperCase();
+        timer.setStartTime(); //timer start
         
             switch(id){
                 case "X":
@@ -178,6 +183,8 @@ public class Driver {
 
             
         }finally{
+            timer.setEndTime(); //stop timer
+            totalTime += timer.calcDuration();
             con.close();
         }
     }
@@ -190,7 +197,7 @@ public class Driver {
         System.out.println("Please enter a farm ID");
         Scanner sc = new Scanner(System.in);
         int id = sc.nextInt();
-        
+        timer.setStartTime(); //timer start
         //choose element apa dia nak
         String table = choice();
         System.out.println("Please enter the id of the " + table + " (Enter X to enter the name of the " + table +")" );
@@ -258,6 +265,8 @@ public class Driver {
                         }while(rst.next());
                         }
         }finally{
+            timer.setEndTime(); //stop timer
+            totalTime += timer.calcDuration();
             con.close();
         }
     }
@@ -271,6 +280,7 @@ public class Driver {
         System.out.println("Please enter a farm ID");
         Scanner sc = new Scanner(System.in);
         int id = sc.nextInt();
+        timer.setStartTime(); //timer start
         
         //choose element apa dia nak
         String table = choice();
@@ -349,6 +359,8 @@ public class Driver {
                         }while(rst.next());
                         }
         }finally{
+            timer.setEndTime(); //stop timer
+            totalTime += timer.calcDuration();
             con.close();
         }
     }
@@ -361,6 +373,7 @@ public class Driver {
         System.out.println("Please enter a farm ID");
         Scanner sc = new Scanner(System.in);
         int farmID = sc.nextInt();
+        timer.setStartTime(); //timer start
         
         //choose element apa dia nak
         String table = choice();
@@ -451,12 +464,15 @@ public class Driver {
                         }while(rst.next());
                         }
         }finally{
+            timer.setEndTime(); //stop timer
+            totalTime += timer.calcDuration();
             con.close();
         }
     }
     
     public static void option0(){
         System.out.println("Thank you");
+        System.out.println("Total time: "+totalTime);
         System.exit(0);
     }
     

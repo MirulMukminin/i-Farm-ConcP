@@ -176,8 +176,8 @@ public class DriverStream {
         String id ;
                        
         System.out.println("Enter the farm's name:");
-        timer.setStartTime(); //timer start
         String name = sc.nextLine();
+        timer.setStartTime(); //timer start
         Optional<Farms> matchingObject = 
             farmList
                     .parallelStream()
@@ -208,8 +208,8 @@ public class DriverStream {
         String id;
         
         System.out.println("Enter the farmer's name:");
-        timer.setStartTime(); //start timer
         String name = sc.next();
+        timer.setStartTime(); //start timer
         Optional<Farmers> matchingObject = 
             farmerList
                     .parallelStream()
@@ -240,8 +240,8 @@ public class DriverStream {
         String id;
                      
         System.out.println("Enter the farm's name:");
-        timer.setStartTime(); //start timer
         String fname = sc.nextLine();
+        timer.setStartTime(); //start timer
         Optional<Farms> matchingObject = 
             farmList
                     .parallelStream()
@@ -369,8 +369,8 @@ public class DriverStream {
         String id;
                      
         System.out.println("Enter the farm's name:");
-        timer.setStartTime(); //start timer
         String fname = sc.nextLine();
+        timer.setStartTime(); //start timer
         Optional<Farms> matchingObject = 
             farmList
                     .parallelStream()
@@ -511,10 +511,9 @@ public class DriverStream {
         Scanner sc = new Scanner(System.in);
         
         String id;
-                     
         System.out.println("Enter the farm's name:");
-        timer.setStartTime();
         String fname = sc.nextLine();
+         timer.setStartTime();
         Optional<Farms> matchingObject = 
             farmList
                     .parallelStream()
