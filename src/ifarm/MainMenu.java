@@ -19,7 +19,8 @@ public class MainMenu {
         
         Scanner sc = new Scanner(System.in);
         
-        System.out.println("Hi. Welcome to i-Farm. Please choose an option.");
+        while(true){
+            System.out.println("Hi. Welcome to i-Farm. Please choose an option.");
         System.out.println("1. Generate activity log text file.");
         System.out.println("2. View data visualization.");
         System.out.println("3. Disaster simulation.");
@@ -40,6 +41,7 @@ public class MainMenu {
                 System.exit(0);
             default:
                 System.out.println("Invalid option, please try again");
+        }
         }
         
     }
