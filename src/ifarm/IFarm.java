@@ -5,6 +5,7 @@ import ifarm.controller.Farmer;
 import ifarm.controller.Farmer1;
 import ifarm.controller.FarmerSeq;
 import ifarm.controller.FarmerSimulator;
+import ifarm.controller.Timer;
 import ifarm.controller.UpdateLog;
 import ifarm.controller.Utility;
 import ifarm.data.Farmers;
@@ -28,7 +29,7 @@ import java.util.concurrent.TimeoutException;
 import org.json.JSONException;
 
 public class IFarm {
-
+        static Timer timer = new Timer();
     public static void GenerateActivity() throws SQLException, JSONException{
         FarmerSimulator farmerSimulator = new FarmerSimulator();
         Farmers[] farmer = null;
@@ -37,7 +38,7 @@ public class IFarm {
         int pestStatus = 0;
         int fertStatus = 0;
         int plantStatus = 0;
-
+        
         activityDA actDA = new dbConnection().getActivityDA();
         
         try {

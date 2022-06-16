@@ -6,8 +6,10 @@ package ifarm;
 
 import DataVis.Driver;
 import DataVis.DriverStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 import org.json.JSONException;
 
 /**
@@ -16,7 +18,7 @@ import org.json.JSONException;
  */
 public class MainMenu {
     
-    public static void main(String[] args) throws SQLException, JSONException {
+    public static void main(String[] args) throws SQLException, JSONException, IOException, ExecutionException {
         
         Scanner sc = new Scanner(System.in);
         
@@ -37,8 +39,7 @@ public class MainMenu {
             case 3:
                 DriverStream.main(args);
             case 4:
-                //code kina here
-                //call main trus ke?
+                IFarm.main(args);
                 break;
             case 0:
                 System.out.println("Thank you");
