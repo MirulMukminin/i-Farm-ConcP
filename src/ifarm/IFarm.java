@@ -72,11 +72,20 @@ public class IFarm {
 //            fs.generateFarmersActivitiesSeq(numOfFarmers, numOfActivities);
         
             // generate farmers and activities concurrently
-           ActivityLog actlog = new ActivityLog();
+            // generate farmers and activities concurrently
+            ActivityLog actlog = new ActivityLog();
+            timer.setStartTime();
             ExecutorService pool = Executors.newFixedThreadPool(numOfFarmers);
                 for(int i = 0; i<numOfFarmers; i++){
                   pool.execute(new Farmer(numOfActivities[i], actlog));
-               }
+           }
+           pool.shutdown();
+           try{
+               pool.awaitTermination(1, TimeUnit.DAYS); }
+           catch(InterruptedException ex){ 
+           }
+           timer.setEndTime();        
+         System.out.println("Time for concurrent approach: "+ timer.calcDuration() +" seconds");
 
            pool.shutdown();
            pool.awaitTermination(5, TimeUnit.SECONDS);
@@ -129,14 +138,21 @@ public class IFarm {
 //            fs.generateFarmersActivitiesSeq(numOfFarmers, numOfActivities);
         
             // generate farmers and activities concurrently
-           ActivityLog actlog = new ActivityLog();
+            // generate farmers and activities concurrently
+            ActivityLog actlog = new ActivityLog();
+            timer.setStartTime();
             ExecutorService pool = Executors.newFixedThreadPool(numOfFarmers);
                 for(int i = 0; i<numOfFarmers; i++){
                   pool.execute(new Farmer(numOfActivities[i], actlog));
-               }
-
+           }
            pool.shutdown();
-           pool.awaitTermination(5, TimeUnit.SECONDS);
+           try{
+               pool.awaitTermination(1, TimeUnit.DAYS); }
+           catch(InterruptedException ex){ 
+           }
+           timer.setEndTime();
+//           
+         System.out.println("Time for concurrent approach: "+ timer.calcDuration() +" seconds");
         //Disaster Simulator
         HashMap<String, List<String>> map2 = new HashMap<>(); // to store { userid = farm }
         HashMap<String, Integer> map1 = new HashMap<String, Integer>(); // to store { userid = activity }
