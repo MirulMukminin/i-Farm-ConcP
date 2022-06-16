@@ -27,8 +27,8 @@ private JSONObject farmObj;
         generateRand();
     } 
     
-    public GenerateActivity(List<String> farms, JSONObject farmObj){
-        this.userFarms = farms;
+    public GenerateActivity(String farmid, JSONObject farmObj){
+        this.farmID = farmid;
         this.farmObj = farmObj;
         generateRand();
     } 
