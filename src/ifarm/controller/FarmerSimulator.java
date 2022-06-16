@@ -8,8 +8,13 @@ import ifarm.dataAccess.fertDA;
 import ifarm.dataAccess.pestDA;
 import ifarm.dataAccess.plantDA;
 import ifarm.dbConnection;
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class FarmerSimulator implements FarmerSimulatorInterface{
 
@@ -47,5 +52,14 @@ public class FarmerSimulator implements FarmerSimulatorInterface{
         pestDA pest = new dbConnection().getPesticidesDA();
         return pest.generatePesticidesDataToTxt("pesticides");
     }
+    
+    public JSONArray getTextToJsonArray(String filename) throws JSONException, FileNotFoundException {
+        Utility util = new Utility();
+        String text = util.readFile(filename);
+        JSONArray textArr = new JSONArray(text);
+        return textArr;        
+    }    
+    
+    
     
 }

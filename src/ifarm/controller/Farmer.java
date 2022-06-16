@@ -4,13 +4,14 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Farmer implements Runnable {
+public class Farmer implements Callable<Integer> {
 ActivityLog log;
 private int index;
 private int numOfActivities;
@@ -20,12 +21,12 @@ private int numOfActivities;
         this.numOfActivities = numOfActivities;
     }
     
-    @Override
-    public void run() {
+    public Integer call() {
         
             try {
             Random rand = new Random();
             Utility util = new Utility();
+            Timer timer = new Timer();
             String users = util.readFile("farmer.txt");
             JSONArray userArr = new JSONArray(users);
             List<String> userFarms = new ArrayList<>();
@@ -43,6 +44,7 @@ private int numOfActivities;
             
 
             // generate activities
+            timer.setStartTime();
             for (int i = 0; i < numOfActivities; i++) {
                 index = log.generateActivities(userID, index, userFarms);
                 index++;
@@ -54,6 +56,7 @@ private int numOfActivities;
         } catch (InterruptedException ex) {
         Logger.getLogger(Farmer.class.getName()).log(Level.SEVERE, null, ex);
     }
+    return 1;
         
     }
     

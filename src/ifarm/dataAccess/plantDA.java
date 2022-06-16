@@ -2,6 +2,7 @@
 package ifarm.dataAccess;
 
 import ifarm.data.Farmers;
+import ifarm.data.Plants;
 import ifarm.dbConnection;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,5 +57,28 @@ public class plantDA implements plantDAInt{
         } finally {
             conn.close();
         }
+    }
+    
+    public Plants getFarmByID(String id) throws SQLException{
+            Connection con = null;
+            PreparedStatement stmt = null;
+            ResultSet rst = null;
+
+            try{
+                con = dbConnection.createCon();
+                stmt = con.prepareStatement("SELECT * FROM plants WHERE plants_id = '" + id + "'");
+                rst = stmt.executeQuery();
+
+                Plants fert = new Plants();
+                while(rst.next()){
+                    fert.setPlantID(rst.getString("fertilizers_id"));
+                    fert.setName(rst.getString("name"));
+                    fert.setUnitType(rst.getString("unitType"));
+                }
+                
+                return fert;
+            }finally{
+             con.close();
+            }  
     }
 }

@@ -25,19 +25,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class FarmerSeq {
+    private Timer timer = new Timer();
     
-        public void generateFarmersActivitiesSeq(int numOfFarmers, int[] numOfActivities) {
+    public void generateFarmersActivitiesSeq(int numOfFarmers, int[] numOfActivities, JSONArray userArr,JSONArray farmsArr,JSONArray plantsArr,JSONArray fertArr,JSONArray pestArr) {
 
         try {
             Random rand = new Random();
             Utility util = new Utility();
-            String users = util.readFile("farmer.txt");
-            JSONArray userArr = new JSONArray(users);
+//            String users = util.readFile("farmer.txt");
+//            JSONArray userArr = new JSONArray(users);
             JSONObject userObj = null;
             String userID = "";
             List<String> userFarm = new ArrayList<>();
-            List<String> userList = new ArrayList<>();
-
+            
+            timer.setStartTime();
             if (userArr.length() <= 0) {
                 userObj = userArr.getJSONObject(rand.nextInt(userArr.length()));
                 userID = userObj.getString("id");
@@ -57,23 +58,23 @@ public class FarmerSeq {
                 }
 
                 // generate activities random number to access any random content from the array
-                indexDb = generateActivitiesSeq(userID, userFarm, indexDb, numOfActivities[i]);
+                indexDb = generateActivitiesSeq(userID, userFarm, indexDb, numOfActivities[i],farmsArr, plantsArr, fertArr, pestArr);
                 indexDb++;
             }
-
+            timer.setEndTime();
         } catch (FileNotFoundException | JSONException e) {
             e.printStackTrace();
         }
 
     }
     
-    public int generateActivitiesSeq(String userID, List<String> userFarms, int index, int numOfActivities) throws FileNotFoundException, JSONException {
+    public int generateActivitiesSeq(String userID, List<String> userFarms, int index, int numOfActivities,JSONArray farmArr,JSONArray plantsArr,JSONArray fertArr,JSONArray pestArr ) throws FileNotFoundException, JSONException {
         Utility util = new Utility();
         Random rand = new Random();
         // get the farm belong to the farmer
         // get farms from farmer
-            String farms = util.readFile("farms.txt");
-            JSONArray farmArr = new JSONArray(farms);
+//            String farms = util.readFile("farms.txt");
+//            JSONArray farmArr = new JSONArray(farms);
             JSONObject farmObj = null;
             String farmID = ""; 
             if (!userFarms.isEmpty()) {
@@ -85,7 +86,7 @@ public class FarmerSeq {
         try {
             // generate activities
             for (int i = 0; i < numOfActivities; i++) {
-                GenerateActivity randAct = new GenerateActivity(userFarms, farmObj);
+                GenerateActivity1 randAct = new GenerateActivity1(userFarms, farmObj, plantsArr, fertArr, pestArr);
                 String date = randAct.getDate();
                 String action = randAct.getAction();
                 String type = randAct.getType();
@@ -112,4 +113,7 @@ public class FarmerSeq {
         return index;
     }
     
+    public double getExecutionTime() {
+        return timer.calcDuration();
+    }
 }

@@ -11,7 +11,7 @@ public class Timer {
     }
 
     public void setStartTime() {
-        this.startTime = System.nanoTime();;
+        this.startTime = System.nanoTime();
     }
 
     public double getEndTime() {
@@ -21,8 +21,14 @@ public class Timer {
     public void setEndTime() {
         this.endTime =  System.nanoTime();
     }
+    
+    public void incrementTime(){
+        
+    }
 
     public double calcDuration() {
-        return (endTime - startTime) / 1000000000.0;
+        //return (endTime - startTime) / 1000000000.0; // return in second
+        return (endTime - startTime) / 1000000.0; // return in milisecond
+        //return (endTime - startTime); // return in nanosecond
     }
 }

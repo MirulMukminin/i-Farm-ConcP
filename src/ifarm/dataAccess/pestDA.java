@@ -2,6 +2,7 @@
 package ifarm.dataAccess;
 
 import ifarm.data.Farmers;
+import ifarm.data.Pesticides;
 import ifarm.dbConnection;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,4 +61,26 @@ public class pestDA implements pestDAInt{
         }
     }
 
+        public Pesticides getFarmByID(String id) throws SQLException{
+            Connection con = null;
+            PreparedStatement stmt = null;
+            ResultSet rst = null;
+
+            try{
+                con = dbConnection.createCon();
+                stmt = con.prepareStatement("SELECT * FROM pesticides WHERE pesticides_id = '" + id + "'");
+                rst = stmt.executeQuery();
+
+                Pesticides pest = new Pesticides();
+                while(rst.next()){
+                    pest.setPestID(rst.getString("fertilizers_id"));
+                    pest.setName(rst.getString("name"));
+                    pest.setUnitType(rst.getString("unitType"));
+                }
+                
+                return pest;
+            }finally{
+             con.close();
+            }  
+    }
 }

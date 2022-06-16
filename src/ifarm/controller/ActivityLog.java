@@ -55,9 +55,9 @@ private int indexDb;
             actDA.addActivities(act);
 
             //Write to log
-            writeLog(Thread.currentThread().getName() + " " + index +" Success: " + date + " " + action + " " + type + " successfully inserted");
-            System.out.println(Thread.currentThread().getName() + " " +index + " - " + date + " " + action + " " + type + " " + unit + " " + quantity + " " + field + " " + row + " " + farmID + " " + userID);
-
+            String text = Thread.currentThread().getName() + " " + index +" Success: " + date + " " + action + " " + type + " successfully inserted";
+            //System.out.println(Thread.currentThread().getName() + " " +index + " - " + date + " " + action + " " + type + " " + unit + " " + quantity + " " + field + " " + row + " " + farmID + " " + userID);
+            util.writeLog(text);
             // increment indexDb
             indexDb++;
             // increment index for thread
@@ -69,13 +69,13 @@ private int indexDb;
         return index;
     }
     
-        public void writeLog(String text) throws InterruptedException {
-        lock.lock();
-            try {
-              Utility util = new Utility();
-              util.writeLog(text);
-            } finally {
-               lock.unlock();
-        }
-    }
+//        public void writeLog(String text) throws InterruptedException {
+//        lock.lock();
+//            try {
+//              Utility util = new Utility();
+//              util.writeLog(text);
+//            } finally {
+//               lock.unlock();
+//        }
+//    }
 }
