@@ -153,7 +153,10 @@ public class IFarm {
            timer.setEndTime();
 //           
          System.out.println("Time for concurrent approach: "+ timer.calcDuration() +" seconds");
-        //Disaster Simulator
+         //Disaster Simulation latest version
+         DisasterSimulation disaster = new DisasterSimulation(numOfFarmers, actlog, numOfActivities);
+            
+        /*//Disaster Simulator
         HashMap<String, List<String>> map2 = new HashMap<>(); // to store { userid = farm }
         HashMap<String, Integer> map1 = new HashMap<String, Integer>(); // to store { userid = activity }
         HashMap<String, String> map = new HashMap<String, String>(); //  to store { userid = threadname }
@@ -279,10 +282,10 @@ public class IFarm {
                 name.removeAll(name); // reset the failure threadpool lot
                 System.out.println(map1); //soon nak buang
                 System.out.println("Program Continue. Repeat: "+map.size());
-            }
-        }   
+            }InterruptedException |
+        }*/   
        
-        } catch (InterruptedException | SQLException | JSONException e) {
+        } catch ( SQLException | JSONException e) {
         }
                 
                 
