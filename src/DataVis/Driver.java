@@ -4,6 +4,7 @@
  */
 package DataVis;
 
+import ifarm.IFarm;
 import ifarm.data.Activity;
 import ifarm.dbConnection;
 import java.sql.Connection;
@@ -14,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
+import org.json.JSONException;
 
 /**
  *
@@ -24,8 +26,9 @@ public class Driver {
     
 
     Scanner sc = new Scanner(System.in);
-    public static void main(String[] args) throws SQLException{
-        
+    public static void main(String[] args) throws SQLException, JSONException{
+//        IFarm i = new IFarm();
+//        i.main(args);
         while(true){
             System.out.println("Please choose an option: ");
         System.out.println("1: Display all activity logs for a farm.");
@@ -70,11 +73,19 @@ public class Driver {
         System.out.println("Please enter a farm ID");
         Scanner sc = new Scanner(System.in);
         int id = sc.nextInt();
+        //Use name instead of ID for improvement
         PreparedStatement stmt = con.prepareStatement("SELECT * FROM activities WHERE farmid = '" + id + "'");
         ResultSet rst = stmt.executeQuery();
+        
         System.out.println("------------------------------------------------------------------");
+        //timer.start;
         try{
-            while(rst.next()){
+            if(rst.next() == false){
+                System.out.println("There is no data. Please check again.");
+                System.out.println("------------------------------------------------------------------");
+            }
+                else{
+                        do{
                 activity.setId(rst.getString("activities_id"));
                 activity.setDate(rst.getString("date"));
                 activity.setAction(rst.getString("action"));
@@ -90,15 +101,16 @@ public class Driver {
                 System.out.println("Date: " + activity.getDate());
                 System.out.println("Type of activity: " + activity.getAction());
                 System.out.println("Materials used: " + activity.getType());
-                System.out.println("Quantity used: " + activity.getQuantity() + activity.getUnit());
+                System.out.println("Quantity used: " + activity.getQuantity() + " " + activity.getUnit());
                 System.out.println("Location: Farm " + activity.getFarmId() + ", Field " + activity.getField() + ", Row " + activity.getRow());
                 System.out.println("Person in charge: Farmer ID " + activity.getUserId());
                 System.out.println("------------------------------------------------------------------");
-                
-            }
-            
-            
+                        }while(rst.next());
+                        }
+
         }finally{
+            //timer.stop;
+            //time += timer.time;
             con.close();
         }
         
@@ -108,14 +120,40 @@ public class Driver {
         Activity activity = new Activity();
         //System.out.println("2 selected");
         Connection con = dbConnection.createCon();
-        System.out.println("Please enter a farmer ID");
+        System.out.println("Please enter a farmer ID (Enter X to enter name instead)");
         Scanner sc = new Scanner(System.in);
-        int id = sc.nextInt();
+        String id = sc.next().toUpperCase();
+        
+            switch(id){
+                case "X":
+                    
+                    System.out.println("Enter the farmer's name:");
+                    String name = sc.next();
+                    PreparedStatement ps = con.prepareStatement("SELECT * from users WHERE name = '" + name +"'");
+                    ResultSet rst = ps.executeQuery();
+                    
+                    try{
+                        rst.next();
+                        id = rst.getString("users_id");
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+        //Use name instead of ID for improvement
         PreparedStatement stmt = con.prepareStatement("SELECT * FROM activities WHERE userid = '" + id + "'");
         ResultSet rst = stmt.executeQuery();
         
         try{
-            while(rst.next()){
+            if(rst.next() == false){
+                System.out.println("There is no data. Please check again.");
+                System.out.println("------------------------------------------------------------------");
+            }
+                else{
+                        do{
                 activity.setId(rst.getString("activities_id"));
                 activity.setDate(rst.getString("date"));
                 activity.setAction(rst.getString("action"));
@@ -131,12 +169,14 @@ public class Driver {
                 System.out.println("Date: " + activity.getDate());
                 System.out.println("Type of activity: " + activity.getAction());
                 System.out.println("Materials used: " + activity.getType());
-                System.out.println("Quantity used: " + activity.getQuantity() + activity.getUnit());
+                System.out.println("Quantity used: " + activity.getQuantity() + " " + activity.getUnit());
                 System.out.println("Location: Farm " + activity.getFarmId() + ", Field " + activity.getField() + ", Row " + activity.getRow());
                 System.out.println("Person in charge: Farmer ID " + activity.getUserId());
                 System.out.println("------------------------------------------------------------------");
-                
-            }
+                        }while(rst.next());
+                        }
+
+            
         }finally{
             con.close();
         }
@@ -153,18 +193,49 @@ public class Driver {
         
         //choose element apa dia nak
         String table = choice();
-        System.out.println("Please enter the id of the " + table);
-        int itemID = sc.nextInt();
+        System.out.println("Please enter the id of the " + table + " (Enter X to enter the name of the " + table +")" );
+        String itemID = sc.next().toUpperCase();
         
-        PreparedStatement stmt1 = con.prepareStatement("SELECT * FROM " + table + " WHERE " + table +"_id =" +itemID);
+            switch(itemID){
+                case "X":
+                    String name = "";
+                    System.out.println("Enter the " + table + " name:");
+                    sc.nextLine();
+                    name = sc.nextLine();
+//                    System.out.println(table);
+//                    System.out.println(name);
+                    PreparedStatement ps = con.prepareStatement("SELECT * from "+ table +" WHERE name = '" + name +"'");
+                    ResultSet rst = ps.executeQuery();
+                    
+                    try{
+                        if(rst.next()){
+                            //rst.next();
+                        itemID = rst.getString(table+"_id");
+                        }else{
+                            System.out.println("Empty sets???");
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
+        PreparedStatement stmt1 = con.prepareStatement("SELECT * FROM " + table + " WHERE " + table +"_id = '" +itemID + "'");
         ResultSet rst1 = stmt1.executeQuery();
         rst1.next();
         String itemName = rst1.getString("name");
         PreparedStatement stmt = con.prepareStatement("SELECT * FROM activities WHERE farmid = '" + id + "' AND type = \"" + itemName +"\"");
         ResultSet rst = stmt.executeQuery();
-        
+        System.out.println("------------------------------------------------------------------");
         try{
-                while(rst.next()){
+                 if(rst.next() == false){
+                System.out.println("There is no data. Please check again.");
+                System.out.println("------------------------------------------------------------------");
+            }
+                else{
+                        do{
                 activity.setId(rst.getString("activities_id"));
                 activity.setDate(rst.getString("date"));
                 activity.setAction(rst.getString("action"));
@@ -180,11 +251,12 @@ public class Driver {
                 System.out.println("Date: " + activity.getDate());
                 System.out.println("Type of activity: " + activity.getAction());
                 System.out.println("Materials used: " + activity.getType());
-                System.out.println("Quantity used: " + activity.getQuantity() + activity.getUnit());
+                System.out.println("Quantity used: " + activity.getQuantity() + " " + activity.getUnit());
                 System.out.println("Location: Farm " + activity.getFarmId() + ", Field " + activity.getField() + ", Row " + activity.getRow());
                 System.out.println("Person in charge: Farmer ID " + activity.getUserId());
                 System.out.println("------------------------------------------------------------------");
-                }
+                        }while(rst.next());
+                        }
         }finally{
             con.close();
         }
@@ -202,8 +274,35 @@ public class Driver {
         
         //choose element apa dia nak
         String table = choice();
-        System.out.println("Please enter the id of the " + table);
-        int itemID = sc.nextInt();
+        System.out.println("Please enter the id of the " + table + " (Enter X to enter the name of the " + table +")" );
+        String itemID = sc.next().toUpperCase();
+        
+            switch(itemID){
+                case "X":
+                    String name = "";
+                    System.out.println("Enter the " + table + " name:");
+                    sc.nextLine();
+                    name = sc.nextLine();
+//                    System.out.println(table);
+//                    System.out.println(name);
+                    PreparedStatement ps = con.prepareStatement("SELECT * from "+ table +" WHERE name = '" + name +"'");
+                    ResultSet rst = ps.executeQuery();
+                    
+                    try{
+                        if(rst.next()){
+                            //rst.next();
+                        itemID = rst.getString(table+"_id");
+                        }else{
+                            System.out.println("Empty sets???");
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
+                    
+                default:
+                    break;
+            }
         
         System.out.println("Please enter the starting date (YYYY-MM-DD):");
         String start = sc.next();
@@ -222,7 +321,12 @@ public class Driver {
         ResultSet rst = stmt.executeQuery();
         
         try{
-            while(rst.next()){
+             if(rst.next() == false){
+                System.out.println("There is no data. Please check again.");
+                System.out.println("------------------------------------------------------------------");
+            }
+                else{
+                        do{
                 activity.setId(rst.getString("activities_id"));
                 activity.setDate(rst.getString("date"));
                 activity.setAction(rst.getString("action"));
@@ -238,11 +342,12 @@ public class Driver {
                 System.out.println("Date: " + activity.getDate());
                 System.out.println("Type of activity: " + activity.getAction());
                 System.out.println("Materials used: " + activity.getType());
-                System.out.println("Quantity used: " + activity.getQuantity() + activity.getUnit());
+                System.out.println("Quantity used: " + activity.getQuantity() + " " + activity.getUnit());
                 System.out.println("Location: Farm " + activity.getFarmId() + ", Field " + activity.getField() + ", Row " + activity.getRow());
                 System.out.println("Person in charge: Farmer ID " + activity.getUserId());
                 System.out.println("------------------------------------------------------------------");
-            }
+                        }while(rst.next());
+                        }
         }finally{
             con.close();
         }
@@ -259,8 +364,36 @@ public class Driver {
         
         //choose element apa dia nak
         String table = choice();
-        System.out.println("Please enter the id of the " + table);
-        int itemID = sc.nextInt();
+        System.out.println("Please enter the id of the " + table + " (Enter X to enter the name of the " + table +")" );
+        String itemID = sc.next().toUpperCase();
+        
+            switch(itemID){
+                case "X":
+                    String name = "";
+                    System.out.println("Enter the " + table + " name:");
+                    sc.nextLine();
+                    name = sc.nextLine();
+//                    System.out.println(table);
+//                    System.out.println(name);
+                    PreparedStatement ps = con.prepareStatement("SELECT * from "+ table +" WHERE name = '" + name +"'");
+                    ResultSet rst = ps.executeQuery();
+                    
+                    try{
+                        if(rst.next()){
+                            //rst.next();
+                        itemID = rst.getString(table+"_id");
+                        }else{
+                            System.out.println("Empty sets???");
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                    break;
+                
+                    
+                default:
+                    break;
+            }
         
         System.out.println("Please enter the starting date (YYYY-MM-DD):");
         String start = sc.next();
@@ -288,7 +421,12 @@ public class Driver {
         ResultSet rst = stmt.executeQuery();
         
         try{
-            while(rst.next()){
+             if(rst.next() == false){
+                System.out.println("There is no data. Please check again.");
+                System.out.println("------------------------------------------------------------------");
+            }
+                else{
+                        do{
                 activity.setId(rst.getString("activities_id"));
                 activity.setDate(rst.getString("date"));
                 activity.setAction(rst.getString("action"));
@@ -310,14 +448,15 @@ public class Driver {
                 System.out.println("Person in charge: Farmer ID " + activity.getUserId());
                 System.out.println("Total quantity used: " + activity.getTotal() + " " + activity.getUnit());
                 System.out.println("------------------------------------------------------------------");
-            }
+                        }while(rst.next());
+                        }
         }finally{
             con.close();
         }
     }
     
     public static void option0(){
-        System.out.println("0 selected");
+        System.out.println("Thank you");
         System.exit(0);
     }
     
