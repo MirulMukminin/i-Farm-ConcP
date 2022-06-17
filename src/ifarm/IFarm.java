@@ -31,7 +31,7 @@ import org.json.JSONException;
 
 public class IFarm {
         static Timer timer = new Timer();
-    public static void GenerateActivity() throws SQLException, JSONException{
+    public static void GenerateActivity(int num,int numOfFarmers, int[] numOfActivities) throws SQLException, JSONException{
         FarmerSimulator farmerSimulator = new FarmerSimulator();
         Farmers[] farmer = null;
         int user = 0;
@@ -48,17 +48,17 @@ public class IFarm {
             String message = actDA.truncateActivities();
             System.out.println(message);
             
-            // generate random number of farmers, x > 100
-            Random rand = new Random();
-            //int numOfFarmers = rand.nextInt(10) + 10;
-            int numOfFarmers = 10;
-            System.out.printf("Number of Farmers: %d \n", numOfFarmers);
-            // generate random number of activities for each farmers, x > 1000
-            int[] numOfActivities = new int[numOfFarmers];
-            for (int i = 1; i <=numOfFarmers; i++) {
-                numOfActivities[i-1] =  rand.nextInt(10) + 100;
-                System.out.printf("Farmer %d : %d activities \n", i, numOfActivities[i-1]);
-            }
+//            // generate random number of farmers, x > 100
+//            Random rand = new Random();
+//            //int numOfFarmers = rand.nextInt(10) + 10;
+//            int numOfFarmers = 10;
+//            System.out.printf("Number of Farmers: %d \n", numOfFarmers);
+//            // generate random number of activities for each farmers, x > 1000
+//            int[] numOfActivities = new int[numOfFarmers];
+//            for (int i = 1; i <=numOfFarmers; i++) {
+//                numOfActivities[i-1] =  rand.nextInt(10) + 100;
+//                System.out.printf("Farmer %d : %d activities \n", i, numOfActivities[i-1]);
+//            }
                         
             //int numOfFarmers = 1;
             // load data from database to txt file
@@ -69,13 +69,11 @@ public class IFarm {
             fertStatus = farmerSimulator.generateFertilizersFile();
             plantStatus = farmerSimulator.generatePlantFile();
 
-//             generate farmers and activities sequentially
-//            FarmerSeq fs = new FarmerSeq();
-//            fs.generateFarmersActivitiesSeq(numOfFarmers, numOfActivities);
-        
-            // generate farmers and activities concurrently
-            // generate farmers and activities concurrently
-            ActivityLog actlog = new ActivityLog();
+            if(num == 1){
+                FarmerSeq fs = new FarmerSeq();
+                fs.generateFarmersActivitiesSeq(numOfFarmers, numOfActivities);
+            }else{
+                ActivityLog actlog = new ActivityLog();
             timer.setStartTime();
             ExecutorService pool = Executors.newFixedThreadPool(numOfFarmers);
                 for(int i = 0; i<numOfFarmers; i++){
@@ -91,6 +89,14 @@ public class IFarm {
 
            pool.shutdown();
            pool.awaitTermination(5, TimeUnit.SECONDS);
+            }
+//             generate farmers and activities sequentially
+//            FarmerSeq fs = new FarmerSeq();
+//            fs.generateFarmersActivitiesSeq(numOfFarmers, numOfActivities);
+        
+            // generate farmers and activities concurrently
+            // generate farmers and activities concurrently
+            
     }catch (InterruptedException | SQLException | JSONException e) {
         }
     }

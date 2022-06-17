@@ -2,6 +2,7 @@
 
 package DataVis;
 
+import ifarm.MainMenu;
 import ifarm.controller.Timer;
 import ifarm.data.Activity;
 import ifarm.data.Farmers;
@@ -11,6 +12,7 @@ import ifarm.data.Pesticides;
 import ifarm.data.Plants;
 import ifarm.data.Quantity;
 import ifarm.dbConnection;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import org.json.JSONException;
 
@@ -41,7 +44,7 @@ public class DriverStream {
     Scanner sc = new Scanner(System.in);
     static Timer timer = new Timer();
     static double totalTime ;
-    public static void main(String[] args) throws SQLException, JSONException{
+    public static void main(String[] args) throws SQLException, JSONException, IOException, ExecutionException, InterruptedException{
         
         Connection con = dbConnection.createCon();
         //to insert user data to userList
@@ -142,6 +145,7 @@ public class DriverStream {
         System.out.println("3: Display all activity logs for a farm and a specific plant/fertilizer/pesticide.");
         System.out.println("4: Display all activity logs for a farm and a specific plant/fertilizer/pesticide between 2 dates (inclusive)");
         System.out.println("5: Display summarized activity logs for a farm and a specific plant/fertilizer/pesticide between 2 dates (inclusive)");
+        System.out.println("99: Back");
         System.out.println("0: Exit");
         Scanner sc = new Scanner(System.in);
         String ans = sc.next();
@@ -161,6 +165,8 @@ public class DriverStream {
                 case "5":
                     option5();
                     break;
+                case "99":
+                    MainMenu.menu(args);
                 case "0":
                     option0();
                     break;
