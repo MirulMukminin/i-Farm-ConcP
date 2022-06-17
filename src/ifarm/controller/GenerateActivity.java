@@ -21,6 +21,7 @@ private String field = "";
 private String row = "";
 private String farmID = ""; 
 private String date; 
+private String userFarm = "";
 private JSONObject farmObj;
 
     public GenerateActivity(){
@@ -32,6 +33,12 @@ private JSONObject farmObj;
         this.farmObj = farmObj;
         generateRand();
     } 
+    
+    public GenerateActivity(String farms, JSONObject farmObj){
+        this.userFarm = farms;
+        this.farmObj = farmObj;
+        generateRand();
+    }    
     
     public void generateRand(){
     Random rand = new Random();
